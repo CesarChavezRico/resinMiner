@@ -31,13 +31,11 @@ RUN apt-get update && apt-get install -yq \
  rm -rf /var/lib/apt/lists/*
 
 # Install required Python packages
-#RUN pip install --upgrade pip
-#
-## Install required Python packages
-#RUN pip install -U \
-# arrow \
-# pyyaml \
-# requests
+RUN pip install --upgrade pip
+RUN pip install -U \
+ arrow \
+ pyyaml \
+ requests
 
 # Set the working directory
 WORKDIR /usr/src/app
