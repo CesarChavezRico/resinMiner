@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -yq \
  python \
  python-dev \
  python-pip \
+ nano \
  # crypto miner build
  automake \
  autoconf \
