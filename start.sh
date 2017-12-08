@@ -3,10 +3,9 @@
 echo ..... start.sh: Setting up Mining Rig ...
 mkdir miner
 cd miner
-git clone https://github.com/novaspirit/wolf-m7m-cpuminer
-cd wolf-m7m-cpuminer
-./autogen.sh
-CFLAG="-O2 mfpu=neon-vfpv4" ./configure
+git clone https://github.com/magi-project/m-cpuminer-v2
+cd m-cpuminer-v2
+./autogen.sh && ./configure CFLAGS="-O3" CXXFLAGS="-O3" && make
 echo ----- miner setup end .. Makefile configuration missing!! -----
 
 echo ..... start.sh: Running main app ....

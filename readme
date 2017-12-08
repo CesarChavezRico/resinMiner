@@ -1,0 +1,83 @@
+--------------------
+To install m-wallet
+--------------------
+
+-> sudo apt-get update
+-> sudo apt-get upgrade
+
+-> cd ~
+-> mkdir coinmagi
+-> cd coinmagi
+-> git clone https://github.com/magi-project/magi.git
+-> cd magi/src
+
+-> sudo apt-get install git build-essential libssl-dev libdb-dev libdb++-dev libgmp-dev libminiupnpc-dev libboost-all-dev libprotobuf-dev
+(Read more here: https://github.com/magi-project/magi/blob/master/doc/build-unix.md)
+
+-> nano makefile.unix
+Add these two lines below to the file after the line "else ifeq ($(xCPUARCH),armv6l)"
+    else ifeq ($(xCPUARCH),armv8l)
+        xCXXFLAGS+=-Ofast -mfpu=neon -mfloat-abi=hard
+it should look like this after the edit:
+
+    ifeq ($(xCPUARCH),armv7l)
+    else ifeq ($(xCPUARCH),armv6l)
+    else ifeq ($(xCPUARCH),armv8l)
+        xCXXFLAGS+=-Ofast -mfpu=neon -mfloat-abi=hard
+    else
+        xCXXFLAGS+=-msse2
+    endif
+
+-> make -f makefile.unix xCPUARCH=armv8l
+
+Please be patient, it'll take some time to compile. You can ignore the warnings about typedef 'Char_type'
+
+I prefer letting the wallet synchronize and validate all the blockchain, but it takes some time.
+To accelerate the process you may also download the latest block-chain data (m-block-chain.tar.gz or .zip) from:
+
+    http://coinmagi.org/bin/block-chain
+
+and extract it somewhere you prefer (I downloaded and extracted it to a USB flash drive attached to the Raspberry Pi)
+
+Create a file named magi.conf, put it somewhere you prefer (again I put it on the USB drive) and add:
+
+    daemon=1
+    server=1
+    rpcport=8232
+    rpcallowip=127.0.0.1
+    rpcuser=rpcuser
+    rpcpassword=rpcpass
+
+to the file and save it.
+
+Finally run the server by running the following command. Wait for it to update the blockchain database
+(it will take some time, please be patient!)
+
+-> ./magid -conf=/path/to/magi.conf -datadir=/path/to/downloaded/blockchain &
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+-------------------------
+To install m-cpuminer-v2
+-------------------------
+
+
+-> cd ~/coinmagi
+-> git clone https://github.com/magi-project/m-cpuminer-v2.git
+-> cd m-cpuminer-v2
+-> sudo apt-get install libcurl4-openssl-dev libcurl4-nss-dev libgmp-dev libssl-dev libjansson-dev automake
+
+edit Makefile.am (search for and change -march=native to -mfpu=neon)
+
+-> ./autogen.sh
+-> ./configure CFLAGS="-mfpu=neon -mfloat-abi=hard"
+-> make
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-------------------------
+To run the miner
+-------------------------
+
+./m-minerd -a m7mhash -o stratum+tcp://xmg.suprnova.cc:7128 -u cesarchavez.polished-sea -p 13xcnBDadcD0

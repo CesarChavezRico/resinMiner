@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -yq \
  python-dev \
  python-pip \
  nano \
- # crypto miner build
+ # crypto miner build requirements
  automake \
  autoconf \
  pkg-config \
@@ -27,6 +27,13 @@ RUN apt-get update && apt-get install -yq \
  g++ \
  git \
  libgmp-dev && \
+ # magicoin wallet build requirements
+ build-essential \
+ libdb-dev \
+ libdb++-dev \
+ libminiupnpc-dev \
+ libboost-all-dev \
+ libprotobuf-dev && \
  # Cleanup
  apt-get clean && \
  rm -rf /var/lib/apt/lists/*
