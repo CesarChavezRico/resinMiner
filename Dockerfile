@@ -2,15 +2,19 @@
 FROM resin/rpi-raspbian
 
 # Set the maintainer
-MAINTAINER Carlos Labrado <carlos@petrolog.us>
+MAINTAINER Cesar Chavez <cesar.a.chavez@gmail.com>
 
 # Enable systemd init system
 ENV INITSYSTEM on
 
 # Install required Linux packages
 RUN apt-cache policy
-RUN apt-get update
-RUN apt-get install -yq python \
+RUN apt-get update && apt-get install -yq \
+ # python and python tools
+ python \
+ python-dev \
+ python-pip \
+ # crypto miner build
  automake \
  autoconf \
  pkg-config \
@@ -21,8 +25,10 @@ RUN apt-get install -yq python \
  make \
  g++ \
  git \
- libgmp-dev \
- apt-get clean && rm -rf /var/lib/apt/lists/*
+ libgmp-dev && \
+ # Cleanup
+ apt-get clean && \
+ rm -rf /var/lib/apt/lists/*
 
 # Install required Python packages
 #RUN pip install --upgrade pip
