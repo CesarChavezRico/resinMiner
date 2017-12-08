@@ -10,7 +10,7 @@ ENV INITSYSTEM on
 # Install required Linux packages
 RUN apt-cache policy
 RUN apt-get update
-RUN apt-get install -yq python
+RUN apt-get install -yq python \
  automake \
  autoconf \
  pkg-config \
