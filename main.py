@@ -2,13 +2,8 @@
 Entry point script
 """
 
-import threading
 import time
-
-import check_tty
 import config
-import leds
-import reset
 
 __author__ = 'Cesar'
 
